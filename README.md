@@ -67,20 +67,28 @@ pip install -r requirements.txt
 # 配置API服务
 
 HOST = "0.0.0.0"               # IP
-PORT = 5000                    # 监听端口
+PORT = 5010                   # 监听端口
 
 
 # 配置数据库
 
-DB_CONN = 'redis://:pwd@127.0.0.1:8888/0'
+DB_CONN = 'redis://:@127.0.0.1:6379/0'
 
 
 # 配置 ProxyFetcher
 
-PROXY_FETCHER = [
-    "freeProxy01",      # 这里是启用的代理抓取方法名，所有fetch方法位于fetcher/proxyFetcher.py
+PROXY_FETCHER = [#从12个获取代理的网址中随机获取代理
+    "freeProxy01",
     "freeProxy02",
-    # ....
+    "freeProxy03",
+    "freeProxy04",
+    "freeProxy05",
+    "freeProxy06",
+    "freeProxy07",
+    "freeProxy08",
+    "freeProxy09",
+    "freeProxy10",
+    "freeProxy11"
 ]
 ```
 
@@ -142,8 +150,10 @@ def delete_proxy(proxy):
     requests.get("http://127.0.0.1:5010/delete/?proxy={}".format(proxy))
 
 # your spider code
+#这里主要放你的请求代码，通过proxy = get_proxy().get("proxy")获得随机ip，然后主要在request等请求中加入，具体框架具体不同用法，例如：yield scrapy.Request(url=URL, callback=self.Single_Model, meta={'proxy': proxy},cookies=Cookie)#, meta={'proxy': proxy}
 
-def getHtml():
+
+def getHtml():#可用可不用，看自己需要
     # ....
     retry_count = 5
     proxy = get_proxy().get("proxy")
@@ -204,7 +214,7 @@ PROXY_FETCHER = [
 ### 免费代理源
 
    目前实现的采集免费代理网站有(排名不分先后, 下面仅是对其发布的免费代理情况, 付费代理测评可以参考[这里](https://zhuanlan.zhihu.com/p/33576641)): 
-   
+
   |   代理名称   |  状态  |  更新速度 |  可用率  |  地址 | 代码                                             |
   | ---------   |  ---- | --------  | ------  | ----- |------------------------------------------------|
   | 站大爷     |  ✔    |     ★     |   **     | [地址](https://www.zdaye.com/)    | [`freeProxy01`](/fetcher/proxyFetcher.py#L28)  |
@@ -219,7 +229,7 @@ PROXY_FETCHER = [
   | 89代理      |  ✔    |     ☆     |   *     | [地址](https://www.89ip.cn/)         | [`freeProxy10`](/fetcher/proxyFetcher.py#L155) |
   | 稻壳代理     |  ✔    |     ★★    |   ***   | [地址](https://www.docip.ne)         | [`freeProxy11`](/fetcher/proxyFetcher.py#L165) |
 
-  
+
   如果还有其他好的免费代理网站, 可以在提交在[issues](https://github.com/jhao104/proxy_pool/issues/71), 下次更新时会考虑在项目中支持。
 
 ### 问题反馈
